@@ -32,16 +32,6 @@ node {
         }
     }
 
-    stage('frontend tests') {
-        try {
-            sh "./mvnw com.github.eirslett:frontend-maven-plugin:yarn -Dfrontend.yarn.arguments=test"
-        } catch(err) {
-            throw err
-        } finally {
-            junit '**/target/test-results/jest/TESTS-*.xml'
-        }
-    }
-
     stage('package and deploy') {
         sh "./mvnw com.heroku.sdk:heroku-maven-plugin:2.0.5:deploy -DskipTests -Pprod -Dheroku.appName="
         archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
